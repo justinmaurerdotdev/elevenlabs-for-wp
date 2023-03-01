@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+PLUGIN_PREFIX="WUUEL"
+~/.composer/vendor/bin/php-scoper add-prefix --prefix=${PLUGIN_PREFIX} --output-dir=./vendor_prefixed/
