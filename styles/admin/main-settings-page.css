@@ -2,21 +2,19 @@
     clear: both;
     margin-bottom: 1.25em;
 }
+
 .wuu-voicelist-voice > p {
     display: inline;
     margin-right: 1em;
-    /*float: left;*/
-    /*overflow: auto;*/
 }
+
 .wuu-voicelist-voice > label {
     margin-bottom: 0;
     vertical-align: baseline;
     font-size: 20px;
     margin-right: 1em;
 }
-.wuu-voicelist-voice > p:first-of-type {
-    /*clear: left;*/
-}
+
 .wuu-voicelist-voicetitle {
     font-weight: bold;
 }

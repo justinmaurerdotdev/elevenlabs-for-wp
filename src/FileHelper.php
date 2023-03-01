@@ -15,7 +15,8 @@ class FileHelper {
 		}
 
 		// Initialize the WordPress filesystem
-		if ( ! function_exists( 'get_filesystem_method' ) ) {
+		global $wp_filesystem;
+		if (!$wp_filesystem instanceof \WP_Filesystem_Base) {
 			WP_Filesystem();
 		}
 	}
@@ -26,6 +27,8 @@ class FileHelper {
 	public static function init_file_dir($file_dir) {
 		global $is_apache;
 		global $wp_filesystem;
+//		var_dump(function_exists('get_filesystem_method'));
+//		var_dump($wp_filesystem);
 		if (!$wp_filesystem instanceof \WP_Filesystem_Base) {
 			throw new FilesystemException('Global $wp_filesystem not found. Please use FileHelper only after the \'init\' action.');
 		}
@@ -34,8 +37,8 @@ class FileHelper {
 			self::mkdir_p( $file_dir );
 		}
 
-		if ( ! $wp_filesystem->is_file( $file_dir . 'index.html' ) ) {
-			$wp_filesystem->touch( $file_dir . 'index.html' );
+		if ( ! $wp_filesystem->is_file( $file_dir . '/index.php' ) ) {
+			$wp_filesystem->touch( $file_dir . '/index.php' );
 		}
 
 		if ( $is_apache ) {

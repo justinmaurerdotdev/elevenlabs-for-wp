@@ -41,13 +41,6 @@ class MainSettingsPage {
 			return;
 		}
 
-		// check if the user have submitted the settings
-		// WordPress will add the "settings-updated" $_GET parameter to the url
-		if ( isset( $_GET['settings-updated'] ) ) {
-			// add settings saved message with the class of "updated"
-			add_settings_error( 'wuu_settings_messages', 'wuu_message', __( 'Settings Saved', 'wuuel' ), 'updated' );
-		}
-
 		// show error/update messages
 		settings_errors( 'wuu_settings_messages' );
 
@@ -86,13 +79,12 @@ class MainSettingsPage {
 
 	public function render_voice_prefs_section_header() {
 		?>
-		<h2>Global Voice Preference</h2>
+        <p>This is where you can set the default voice to be used on all generated readings.</p>
 		<?php
 	}
 
 	public function render_voice_prefs_field() {
 		$global_preferred_voice = get_option('wuu_preferred_voice');
-        var_dump($global_preferred_voice);
 		$voices = $this->api_tools->get_voices();
         $voice_count = 1;
 		foreach ($voices as $voice) {
