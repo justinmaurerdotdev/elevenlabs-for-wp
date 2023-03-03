@@ -1,0 +1,20 @@
+.wuu-voicelist-voice {
+    clear: both;
+    margin-bottom: 1.25em;
+}
+
+.wuu-voicelist-voice > p {
+    display: inline;
+    margin-right: 1em;
+}
+
+.wuu-voicelist-voice > label {
+    margin-bottom: 0;
+    vertical-align: baseline;
+    font-size: 20px;
+    margin-right: 1em;
+}
+
+.wuu-voicelist-voicetitle {
+    font-weight: bold;
+}

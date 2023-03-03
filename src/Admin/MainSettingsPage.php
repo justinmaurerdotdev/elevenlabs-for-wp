@@ -2,6 +2,7 @@
 
 namespace WebUsUp\ElevenLabsForWp\Admin;
 
+use ElevenLabs\V1\SDK\ElevenLabsAPIClient;
 use WebUsUp\ElevenLabsForWp\ElevenLabsForWp;
 use WebUsUp\ElevenLabsForWp\WUUElevenLabsVoice;
 
@@ -9,19 +10,19 @@ class MainSettingsPage {
 	private string $minimum_capability = 'manage_options';
 	private string $title = 'ElevenLabs Audio';
     public string $slug = 'wuu-elevenlabs-settings';
-	private ElevenLabsForWp $plugin;
 	private AdminAPITools $api_tools;
 
-	public function __construct(ElevenLabsForWp $plugin) {
-		$this->plugin = $plugin;
-		$this->api_tools = new AdminAPITools($this->plugin->api_client);
+
+	public function __construct(ElevenLabsAPIClient $api_client) {
+		$this->api_tools = new AdminAPITools($api_client);
 		add_action('admin_init', [$this, 'register_settings']);
 		add_action('admin_menu', [$this, 'add_menu_page']);
 	}
 
     public function enqueue() {
-        $url = $this->plugin->styles_dir_url . '/admin/main-settings-page.css';
-        wp_enqueue_style('wuu-main-settings', $url, [], $this->plugin->plugin_version);
+        global $wuu_elevenlabs_filehelper;
+        $url = $wuu_elevenlabs_filehelper->styles_dir_url . '/admin/main-settings-page.css';
+        wp_enqueue_style('wuu-main-settings', $url, [], WUU_ELEVENLABS_VERSION);
     }
 
 	public function add_menu_page() {
@@ -44,7 +45,8 @@ class MainSettingsPage {
 		// show error/update messages
 		settings_errors( 'wuu_settings_messages' );
 
-		include_once $this->plugin->template_dir_path .'/admin/main-settings-page.php';
+        global $wuu_elevenlabs_filehelper;
+		include_once $wuu_elevenlabs_filehelper->template_dir_path .'/admin/main-settings-page.php';
 	}
 
 	public function register_settings() {
@@ -90,7 +92,7 @@ class MainSettingsPage {
 		foreach ($voices as $voice) {
 			?>
             <div class="wuu-voicelist-voice">
-                <input type="radio" id="voice-<?= $voice_count ?>" value="<?= $voice->voice_id ?>" name="wuu_preferred_voice" <?= $global_preferred_voice === $voice->voice_id ? 'checked' : '' ?>>
+                <input type="radio" id="voice-<?= $voice_count ?>" value="<?= $voice->voice_id ?>" name="wuu_preferred_voice" <?= checked($global_preferred_voice, $voice->voice_id) ?>>
                 <label class="wuu-voicelist-voicetitle" for="voice-<?= $voice_count ?>"><?= $voice->name ?></label>
                 <p class="wuu-voicelist-voicecategory">Type: <?= $voice->category ?></p>
                 <div class="wuu-voicelist-sample">

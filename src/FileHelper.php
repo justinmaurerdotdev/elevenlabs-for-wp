@@ -3,6 +3,23 @@
 namespace WebUsUp\ElevenLabsForWp;
 
 class FileHelper {
+
+	public string $uploads_relative_dir = 'wuu-elevenlabs';
+	public string $uploads_absolute_dir;
+
+	public string $template_dir_path;
+	public string $styles_dir_url;
+
+	public function __construct($plugin_root_file) {
+
+		$template_dir_path = dirname($plugin_root_file) .'/templates';
+		$styles_dir_url = plugins_url('/', $plugin_root_file) .'/styles';
+		$this->template_dir_path = $template_dir_path;
+		$this->styles_dir_url = $styles_dir_url;
+		add_action('init', [$this, 'make_global_filesystem_object'], 10 );
+		add_action('init', [$this, 'setup_uploads_dir'], 20 );
+	}
+
 	public static function make_global_filesystem_object() {
 		// https://developer.wordpress.org/apis/filesystem/
 		// First, include the necessary WordPress files
@@ -21,14 +38,20 @@ class FileHelper {
 		}
 	}
 
+	public function setup_uploads_dir() {
+		$uploads_dir_info = wp_upload_dir();
+		$path = $uploads_dir_info['basedir'] . '/' . $this->uploads_relative_dir;
+		$this->uploads_absolute_dir = $path;
+		self::init_file_dir($path);
+	}
+
 	/**
 	 * @throws FilesystemException
 	 */
 	public static function init_file_dir($file_dir) {
 		global $is_apache;
 		global $wp_filesystem;
-//		var_dump(function_exists('get_filesystem_method'));
-//		var_dump($wp_filesystem);
+
 		if (!$wp_filesystem instanceof \WP_Filesystem_Base) {
 			throw new FilesystemException('Global $wp_filesystem not found. Please use FileHelper only after the \'init\' action.');
 		}

@@ -11,6 +11,7 @@ License: MIT
 */
 
 use WebUsUp\ElevenLabsForWp\ElevenLabsForWp;
+use WebUsUp\ElevenLabsForWp\FileHelper;
 
 require 'vendor/autoload.php';
 const WUU_ELEVENLABS_VERSION = '1.0.0';
@@ -19,9 +20,8 @@ if ( ! function_exists( 'add_filter' ) ) {
 	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
 }
-$template_dir_path = dirname(__FILE__) .'/templates';
-$styles_dir_url = plugins_url('/', __FILE__) .'/styles';
 
-$plugin = new ElevenLabsForWp($template_dir_path, $styles_dir_url);
+$GLOBALS['wuu_elevenlabs_filehelper'] = new FileHelper(__FILE__);
+$plugin = new ElevenLabsForWp();
 register_activation_hook(__FILE__, [$plugin, 'activation']);
 register_deactivation_hook(__FILE__, [$plugin, 'deactivation']);
